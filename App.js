@@ -47,7 +47,7 @@ function Panel ({ handleClick }) {
             <NumberBtn id="two" number={2} />
             <NumberBtn id="three" number={3} />
           </div>
-          <div style={{backgroundColor: "inherit", gridColumn: "1 / span 3", display: "flex"}}>
+          <div style={{backgroundColor: "blue", gridColumn: "1 / span 3", display: "flex"}}>
             <NumberBtn id="zero" className="jumbo" number={0} />
             <NumberBtn id="decimal-point" number={"."} />
           </div>
