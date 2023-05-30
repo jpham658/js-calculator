@@ -1,0 +1,7 @@
+.wrapper {
+    border: 2px solid rgb(63, 143, 120);
+    padding: 5px;
+    background: rgb(98, 175, 183);
+    width: 320px;
+    position: relative;
+}

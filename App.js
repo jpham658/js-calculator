@@ -1,87 +1,74 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import Calculator from "./components/Calculator";
+import DisplayScreen from "./components/DisplayScreen";
+import ButtonPanel from "./components/ButtonPanel";
+import Button from "./components/Button";
 import './App.css';
 
-function NumberBtn ({ id, className, number }){
-  return (
-    <button id={id} className={`btn ${className}`}
-     value={number}>
-      {number}</button>
-  );
-}
+function App () {
+  let [calc, setCalc] = useState({
+    sign: "",
+    num: 0,
+    res: 0
+  });
 
-NumberBtn.propTypes = {
-  id: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired
-};
+  const numClickHandler = (e) => {
+    e.preventDefault();
+    const value = e.target.innerHTML;
 
-function OperatorBtn ({ id, className, symbol }) {
-  return (
-    <button id={id} className={`btn ${className}`}>{symbol}</button>
-  );
-}
+    if (calc.num.length < 16) {
+      setCalc({
+        ...calc, 
+        num:
+          calc.num === 0 && value === "0"
+          ? "0"
+          : calc.num % 1 === 0
+          ? Number(calc.num + value)
+          : calc.num + value,
+          res: !calc.sign ? 0: calc.res
+      });
+    }
+  };
 
-OperatorBtn.propTypes = {
-  id: PropTypes.string.isRequired,
-  symbol: PropTypes.string.isRequired
-};
+  const signClickHandler = (e) => {};
 
-function Panel ({ handleClick }) {
-  return (
-    <>
-    <div id="calculator-btns" >
-        <OperatorBtn id="ac" className="jumbo" symbol="AC" />
-        <OperatorBtn id="divide" symbol="/" />
-        <OperatorBtn id="multiply" symbol="x" />
-        <NumberBtn id="seven" number={7} />
-        <NumberBtn id="eight" number={8} />
-        <NumberBtn id="nine" number={9} />
-        <OperatorBtn id="minus" symbol="-" />
-        <NumberBtn id="four" number={4} />
-        <NumberBtn id="five" number={5} />
-        <NumberBtn id="six" number={6} />
-        <OperatorBtn id="plus" symbol="+" />
-        <div style={{backgroundColor: "inherit", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 0, marginRight: 20}}> 
-          <div style={{backgroundColor: "inherit", display: "flex"}}>
-            <NumberBtn id="one" number={1} />
-            <NumberBtn id="two" number={2} />
-            <NumberBtn id="three" number={3} />
-          </div>
-          <div style={{backgroundColor: "inherit", gridColumn: "1 / span 3", display: "flex"}}>
-            <NumberBtn id="zero" className="jumbo" number={0} />
-            <NumberBtn id="decimal-point" number={"."} />
-          </div>
-          <div style={{backgroundColor: "inherit", gridColumn: 4, gridRow: "1 / span 2"}}>
-            <OperatorBtn id="equals" symbol="=" />
-          </div>
-        </div>
-    </div>
-    </>
-  );
-}
+  const resetClickHandler = (e) => {};
 
-function Calculator ({ output, equation }) {
-  return (
-    <>
-    <div className="calculator">
-      <div id="equation-screen">EQUATION</div>
-      <div id="output-screen">{output}</div>
-      <Panel />
-    </div>
-    </>
-  );
-}
+  const decimalClickHandler = (e) => {};
 
-function App() {
-  const [input, setInput] = useState('HI');
-  const [equation, setEquation] = useState([Array(3).fill(null)]);
-
-  function handleClick (){}
+  const buttonValues = [
+    ["AC", "/", "x"],
+    [7, 8, 9, "-"],
+    [4, 5, 6, "+"],
+    [1, 2, 3],
+    [0, ".", "="]
+  ];
 
   return (
-    <>
-      <Calculator output={input} equation={equation} />
-    </>
+    <Calculator>
+      <DisplayScreen output={calc.num ? calc.num : calc.res} equation={calc.res} />
+      <ButtonPanel
+        buttons={
+          buttonValues.flat().map((button, i) => {
+            return (
+              <Button key={i} className={
+                button === "=" ? "equals" : 
+                button === "AC" || button === 0 ? "jumbo" : ""} value={button} 
+                onClick = {
+                  button === "AC" 
+                  ? resetClickHandler
+                  : button === "." 
+                  ? decimalClickHandler
+                  : button ===  "/" || button === "x" || button === "-" || button === "+"
+                  ? signClickHandler
+                  : numClickHandler
+                } 
+              />
+            );
+          })
+        }>
+      </ButtonPanel>
+    </Calculator>
   );
 }
 
