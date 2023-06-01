@@ -37,7 +37,7 @@ function Button ({ className, value }) {
       setCalc({
         ...calc,
         sign: value,
-        res: !calc.res && calc.num 
+        res: calc.num
              ? calc.num : calc.res,
         num: 0
       })
