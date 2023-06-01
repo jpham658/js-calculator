@@ -1,13 +1,17 @@
+import { CalcContext } from "../context/CalcContext";
+import { useContext } from "react";
 import "./DisplayScreen.css";
 
-function DisplayScreen ({ output, equation }) {
+function DisplayScreen () {
+    const { calc } = useContext(CalcContext);
+
     return (
         <div className="display-screen" >
             <div className="equation">
-                {equation}
+                {calc.res}
             </div>
             <div className="output">
-                {output}
+                {calc.num}
             </div>
         </div>
     );
